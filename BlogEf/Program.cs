@@ -12,28 +12,19 @@ class Program
         {
             using (var context = new BlogDataContext())
             {
-                var tag = new Tag { Name = "ASP.NET", Slug = "new"};
-                context.Tags.Add(tag);
-                context.SaveChanges();
-                context.Tags.Update(tag);
-                var tag = context.Tags.FirstOrDefault(t => t.Id == 1003); //obj que vem do banco
-                tag.Slug = "sla";
-                context.Update(tag);
-                context.SaveChanges();
-                var tag = context.Tags.FirstOrDefault(t => t.Id == 1003);
-                context.Remove(tag);
-                context.SaveChanges();
-                var tags = context.Tags.ToList();
-                foreach (var abc in tags)
+                // var user = new User{ Name = "Vinicim", Slug = "vini-ma", Bio = "student developer", Email = "vinicim@gmail.com", Image = "https", PasswordHash = "123456789"};
+                // var category = new Category { Name = "Backend", Slug = "backend" };
+                // var post = new Post
+                // {
+                //     Author = user, Category = category, Body = "<p>Hello world<p>", Slug = "comecando-com-ef-core", Summary = "aprendendo ef core",
+                //     Title = "Comecando ef core", CreateDate = DateTime.Now, LastUpdateDate = DateTime.Now};
+                // context.Posts.Add(post);
+                // context.SaveChanges();
+                var posts = context.Posts.AsNoTracking().OrderByDescending(x => x.LastUpdateDate).ToList();
+                foreach (var post in posts)
                 {
-                    Console.WriteLine(abc.Name + " - " + abc.Slug);
+                    Console.WriteLine($"{post.Title} ({post.Author?.Name})");
                 }
-                
-                var tag = context.Tags.FirstOrDefault(x => x.Id == 1002);
-                tag.Name = "Lolinha mil grau";
-                tag.Slug = "lolinha";
-                context.Update(tag);
-                context.SaveChanges();
             }
         }
         catch (Exception e)
